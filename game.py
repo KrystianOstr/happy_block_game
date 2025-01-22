@@ -18,20 +18,26 @@ clock = pygame.time.Clock()
 background_white = (255,255,255) #background
 
 #player
-player_width = 50
-player_height = 50
+player_image = pygame.image.load('./images/hedgehog.png')
+player_image = pygame.transform.scale(player_image, (50, 50))
+# player_width = 50
+# player_height = 50
+player_width, player_height = 50, 50
 player_x = screen_width // 2 - player_width // 2
 player_y = screen_height - player_height - 10
 player_speed = 5
-player_color = (0,0,255)
+# player_color = (0,0,255)
 
 #obstacle
-obstacle_width = 50
-obstacle_height = 50
+obstacle_image = pygame.image.load('./images/stone.png')
+obstacle_image = pygame.transform.scale(obstacle_image, (50, 50))
+# obstacle_width = 50
+# obstacle_height = 50
+obstacle_width, obstacle_height = 50, 50
 obstacle_x = random.randint(0, screen_width - obstacle_width)
 obstacle_y = -obstacle_height
 obstacle_speed = 5
-obstacle_color = (255,0,0)
+# obstacle_color = (255,0,0)
 obstacle_count = 5
 obstacles = []
 
@@ -108,10 +114,11 @@ while running:
         
         #background, player and obstacles
         screen.fill(background_white)
-        pygame.draw.rect(screen, player_color, (player_x, player_y, player_width, player_height))
+        # pygame.draw.rect(screen, player_color, (player_x, player_y, player_width, player_height))
+        screen.blit(player_image, (player_x, player_y))
         for obstacle in obstacles:
-            pygame.draw.rect(screen, obstacle_color, (obstacle[0], obstacle[1], obstacle_width, obstacle_height))
-            
+            # pygame.draw.rect(screen, obstacle_color, (obstacle[0], obstacle[1], obstacle_width, obstacle_height))
+            screen.blit(obstacle_image, (obstacle[0], obstacle[1]))
             if ( 
             player_x < obstacle[0] + obstacle_width and
             player_x + player_width > obstacle[0] and
