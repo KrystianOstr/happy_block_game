@@ -7,16 +7,46 @@ pygame.init()
 
 pygame.mixer.init()
 
-pygame.mixer.music.load('./sounds/background_music.mp3')
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.5)
+def play_background_music(music_path):
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(music_path)
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
+
+
+background_music = './sounds/background_music.mp3'
+gameover_music = './sounds/gameover.mp3'
 
 collision_sound = pygame.mixer.Sound('./sounds/collision.mp3')
 collision_sound.set_volume(1.0)
 
+play_background_music(background_music)
+
 # score
 
 score = 0 
+
+# high score
+
+high_score = 0
+
+try: 
+    with open('highscore.txt', 'r') as file:
+        high_score = int(file.read())
+except FileNotFoundError:
+    high_score = 0
+
+def check_highscore(score, high_score):
+    if score > high_score:
+        high_score = score
+        with open('highscore.txt', 'w') as file:
+            file.write(str(high_score))
+    return high_score
+
+
+# level
+
+level = 0
 
 #gamescreen
 
@@ -78,9 +108,13 @@ game_over = False
 while running:
     if game_over == True:
         screen.fill(background_white)
+
+        high_score = check_highscore(score, high_score)
+
         draw_text(screen, 'Game Over', 60, screen_width // 2, screen_height // 2 - 30, (255,0,0))
         draw_text(screen, "Press R to restart", 40, screen_width // 2, screen_height // 2 + 30, (0,0,0))
         draw_text(screen, f'You earned {score} points!', 30, screen_width // 2, screen_height // 2 - 100, (0,0,0))
+        draw_text(screen, f'High score: {high_score}', 30, screen_width // 2, screen_height // 2 - 130, (0,0,0))
         pygame.display.flip()
         # pygame.time.wait(1000)
         
@@ -91,7 +125,7 @@ while running:
                 if event.key == pygame.K_r:
                     # game restart
                     game_over = False
-                    pygame.mixer.music.play(-1)
+                    play_background_music(background_music)
                     score = 0
                     player_x = screen_width // 2 - player_width // 2
                     player_y = screen_height - player_height - 10
@@ -133,14 +167,19 @@ while running:
             player_y < obstacle[1] + obstacle_height and
             player_y + player_height > obstacle[1]
             ):
-                pygame.mixer.music.stop()
+                play_background_music(gameover_music)
                 collision_sound.play()
                 game_over = True
         
         draw_text(screen, f'Score: {score}', 30, screen_width // 2, 30, (0,0,0))
+        draw_text(screen, f'High score: {high_score}', 20, screen_width - 120, 30, (0,0,0))
+        draw_text(screen, f'Level: {level}', 20, 120, 30, (0,0,0))
     
     if not game_over:
         score += 1 # score per tick
+        if score % 200 == 0:
+            obstacle_speed += 0.2
+
     pygame.display.flip()
     
     clock.tick(60)
