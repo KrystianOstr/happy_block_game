@@ -7,12 +7,27 @@ pygame.init()
 
 pygame.mixer.init()
 
+#gamescreen
+
+screen_width = 800
+screen_height = 600
+
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Happy Hedgehog")
+
+clock = pygame.time.Clock()
+
+# background
+
 def play_background_music(music_path):
     pygame.mixer.music.stop()
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.5)
 
+
+background_image = pygame.image.load('./images/background.png')
+background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
 
 background_music = './sounds/background_music.mp3'
 gameover_music = './sounds/gameover.mp3'
@@ -46,17 +61,8 @@ def check_highscore(score, high_score):
 
 # level
 
-level = 0
+level = 1
 
-#gamescreen
-
-screen_width = 800
-screen_height = 600
-
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Happy Block - Step 1")
-
-clock = pygame.time.Clock()
 
 #colors
 
@@ -155,7 +161,8 @@ while running:
 
         
         #background, player and obstacles
-        screen.fill(background_white)
+        # screen.fill(background_white)
+        screen.blit(background_image, (0,0))
         # pygame.draw.rect(screen, player_color, (player_x, player_y, player_width, player_height))
         screen.blit(player_image, (player_x, player_y))
         for obstacle in obstacles:
@@ -171,26 +178,21 @@ while running:
                 collision_sound.play()
                 game_over = True
         
-        draw_text(screen, f'Score: {score}', 30, screen_width // 2, 30, (0,0,0))
-        draw_text(screen, f'High score: {high_score}', 20, screen_width - 120, 30, (0,0,0))
-        draw_text(screen, f'Level: {level}', 20, 120, 30, (0,0,0))
+        draw_text(screen, f'Score: {score}', 40, screen_width // 2, 30, (0,0,0))
+        draw_text(screen, f'High score: {high_score}', 35, screen_width - 120, 30, (0,0,0))
+        draw_text(screen, f'Level: {level}', 35, 120, 30, (0,0,0))
     
     if not game_over:
         score += 1 # score per tick
         if score % 200 == 0:
-            obstacle_speed += 0.2
+            obstacle_speed += 1
+        if score % 400 == 0:
+                level += 1
 
     pygame.display.flip()
     
     clock.tick(60)
     
 pygame.quit()
-
-
-
-
-
-
-
 
 
