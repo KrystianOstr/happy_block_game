@@ -2,7 +2,16 @@
 
 Happy Block Game is a fun and dynamic game created using Python and Pygame. The goal is to control the player, avoid falling obstacles for bonus points. The game gets more challenging as you play, making it exciting and engaging!
 
+---
 
+## 🚀 **SUPER NEWS!** – Now in EXE format 🎮  
+You can now download and play the game without installing Python or Pygame!  
+
+1. Go to **[Releases](../../releases)**.  
+2. Download the latest `.exe` file (e.g. `HappyBlockGame-win-x64-vX.Y.Z.exe`).  
+3. Run the file and enjoy the game instantly!  
+
+---
 
 **Features**
   - Avoid Obstacles: Navigate the player to avoid falling blocks.
