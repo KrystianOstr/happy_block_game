@@ -28,7 +28,7 @@ jobs:
 
       - name: pyinstaller - onefile
         run: |
-          pyinstaller -- onefile \
+          pyinstaller --onefile \
             --name HappyBlockGame \
             --add-data "assets;assets" \
             --noconsole \
